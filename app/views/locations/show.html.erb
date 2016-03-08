@@ -2,6 +2,8 @@
 
 <h1>Your Escape Bus!</h1>
 
+<div id="map"></div>
+
 <h3 class="text-muted">Your current location</h3>
 <p class="text-muted">
   <%= @location.full_street_address %> <small><%= link_to fa_icon('pencil', text: 'Edit'), edit_location_path(@location) %></small>
@@ -22,3 +24,43 @@
     Not really that close. :( Time to walk, bike, taxi, Uber, or <%= link_to 'edit your location', edit_location_path(@location) %>.
   </p>
 <% end %>
+
+<script>
+  var map, mapOptions;
+  function initMap() {
+    var userLatLng = {
+      lat: <%= @location.latitude %>,
+      lng: <%= @location.longitude %>
+    };
+
+    var nearbyBuses = <%= raw @buses.to_json %>;
+
+    mapOptions = {
+      center: userLatLng,
+      zoom: 15
+    };
+
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+    var userMarker = new google.maps.Marker({
+      position: userLatLng,
+      map: map,
+      animation: google.maps.Animation.DROP,
+      title: 'You Are Here'
+    });
+
+    nearbyBuses.forEach(function (element){
+      var busLatLng = new google.maps.LatLng(element['LATITUDE'], element['LONGITUDE']);
+
+      var busMarker = new google.maps.Marker({
+        position: busLatLng,
+        map: map,
+        animation: google.maps.Animation.DROP,
+        title: element['ROUTE']
+      });
+    });
+  }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['google_maps_api_key'] %>&callback=initMap"
+    async defer></script>

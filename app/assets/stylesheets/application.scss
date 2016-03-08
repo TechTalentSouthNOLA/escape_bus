@@ -2,3 +2,10 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "font-awesome";
+
+#map {
+  height: 500px;
+  width: 500px;
+  margin: 0;
+  padding: 0;
+}
