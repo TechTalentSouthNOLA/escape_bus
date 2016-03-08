@@ -33,6 +33,8 @@
       lng: <%= @location.longitude %>
     };
 
+    var userIcon = "<%= image_path 'beachflag.png' %>";
+
     var nearbyBuses = <%= raw @buses.to_json %>;
 
     mapOptions = {
@@ -46,7 +48,8 @@
       position: userLatLng,
       map: map,
       animation: google.maps.Animation.DROP,
-      title: 'You Are Here'
+      title: 'You Are Here',
+      icon: userIcon
     });
 
     nearbyBuses.forEach(function (element){
