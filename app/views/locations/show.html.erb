@@ -61,6 +61,22 @@
         animation: google.maps.Animation.DROP,
         title: element['ROUTE']
       });
+
+      var busInfo =
+        '<div id="content">' +
+          '<h2>Bus ' + element['ROUTE'] + ' ' + element['DIRECTION'] + '</h2>' +
+          '<div id="bodyContent">' +
+            '<p>Next stop: ' + element['TIMEPOINT'] + '</p>' +
+          '</div>' +
+        '</div>';
+
+      var busWindow = new google.maps.InfoWindow({
+        content: busInfo
+      });
+
+      google.maps.event.addListener(busMarker, 'click', function(){
+        busWindow.open(map, busMarker);
+      });
     });
   }
 </script>
